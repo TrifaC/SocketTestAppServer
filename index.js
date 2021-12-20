@@ -1,3 +1,13 @@
+/**
+ * Some Note to explain:
+ * 1. Client side should enter the name then doing the connect action.
+ *     1.1 e.g. socketObjects = { player1Name: player1, player2Name: player2 }
+ * 2. Socket can support deliver a JSON object in one communication.
+ *     2.1 e.g. client side can send { param1: value1, param2: value2 ...... }
+ *     2.2 The message should be changed into JSON object first in client side.
+*/
+
+
 /************************************** Variable And Constants Declaration *******************************************/
 
 
@@ -23,19 +33,24 @@ app.get('/', (req, res) => {
 // Method will execute during connection event.
 io.on('connection', (client) => {
   
-  // Append the client into the object, and broadcast that some client has enter the room.
-  // console.log("client connected: The id is " + client.id)
-  socketObjects[client.id] = client
-  io.emit('chat message', "A client " + client.id + " enter the room")
+  // Event: Register the client
+  client.on('register', data=> {
+    console.log('RECEIVE USER NAME:', "The client " + data.name + " has enter the room who is a " + data.grade + " student.")
+    client.username = data.name
+    socketObjects[data.name] = client
+    io.emit('chat message', "The client " + data.name + " has enter the room who is a " + data.grade + " student.")
+  })
 
+  // Event: Show Chat Message. (Receive from client.)
   client.on('chat message', msg => {
-    console.log(msg)
+    console.log('RECEIVE CHAT MESSAGE FROM :', "Client " + client.username + " says " + msg)
     io.emit('chat message', msg);
   });
 
+  // Event: Disconnect. (Receive fro client)
   client.on('disconnect', () => {
+    console.log('RECEIVE DISCONNECT :', "Client " + client.username + " leave the room")
     delete socketObjects[client.id]
-    client.emit('Le')
   });
 });
 
