@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "description": "my first socket.io app",
   "dependencies": {
+    "@socket.io/admin-ui": "^0.2.0",
+    "bootstrap": "^5.1.3",
     "engine.io-client": "^6.1.1",
     "express": "^4.17.1",
     "socket.io": "^4.1.2",
@@ -10,5 +12,17 @@
   },
   "scripts": {
     "start": "node index.js"
-  }
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TrifaC/SocketTestAppServer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TrifaC/SocketTestAppServer/issues"
+  },
+  "homepage": "https://github.com/TrifaC/SocketTestAppServer#readme"
 }

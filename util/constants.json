@@ -1,0 +1,24 @@
+{
+    "SERVER_EVENT": {
+        "CONNECTION": "connection"
+    },
+    "CLIENT_EVENT": {
+        "REGISTER": "register",
+        "CHAT": "chat",
+        "DISCONNECT": "disconnect",
+        "START": "start section",
+        "FINISH": "finish section",
+        "PUSH_UP": "push up"
+    },
+    "OBJECT_KEY": {
+        "NAME": "name",
+        "COUNT": "count",
+        "STATE": "state"
+    },
+    "STATE": {
+        "INIT": "init",
+        "START": "start",
+        "FINISH": "finish",
+        "ERROR": "error"
+    }
+}
