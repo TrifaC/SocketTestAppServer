@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
 });
 
 
-/************************************* Support Functions ************************************************************/
+/************************************* Data Update Functions *********************************************************/
 
     
     function initClientObject(client, data) {
@@ -49,6 +49,14 @@ app.get('/', (req, res) => {
         clientObject[constants.OBJECT_KEY.COUNT] = 0
         clientObject[constants.OBJECT_KEY.STATE] = constants.STATE.INIT
         return clientObject
+    }
+
+    function updateCount(client, newCount) {
+        clientObjects[client.id][constants.OBJECT_KEY.COUNT] = newCount
+    }
+
+    function updateState(client, state) {
+        clientObjects[client.id][constants.OBJECT_KEY.STATE] = state
     }
 
 
@@ -77,7 +85,7 @@ io.on(constants.SERVER_EVENT.CONNECTION, (client) => {
 
     // Event: Start Sport Section.
     client.on(constants.CLIENT_EVENT.START, startPoint => {
-        clientObjects[client.id][constants.OBJECT_KEY.STATE] = constants.STATE.START
+        updateState(client, constants.STATE.START)
         console.log("****************************************************************************************************")
         console.log('RECEIVE START EVENT :', "Client " + client.username + " start the sport section at " + startPoint)
         console.log('OBJECT REVIEW: :', JSON.stringify(clientObjects[client.id]))
@@ -87,6 +95,7 @@ io.on(constants.SERVER_EVENT.CONNECTION, (client) => {
 
     // Event: Finish Sport Section.
     client.on(constants.CLIENT_EVENT.FINISH, finishPoint => {
+        updateState(client, constants.STATE.FINISH)
         console.log("****************************************************************************************************")
         console.log('RECEIVE FINISH EVENT :', "Client " + client.username + " finish the sport section at  " + finishPoint)
         console.log("****************************************************************************************************\n")
@@ -95,11 +104,10 @@ io.on(constants.SERVER_EVENT.CONNECTION, (client) => {
 
     // Event: Continuous Push up Section. (Test Only)
     client.on(constants.CLIENT_EVENT.PUSH_UP, pushUpTimePoint => {
-        clientObjects[client.id][constants.OBJECT_KEY.COUNT] = pushUpTimePoint
+        updateCount(client, pushUpTimePoint)
         console.log("****************************************************************************************************")
         console.log('RECEIVE PUSH UP EVENT :', "Client " + clientObjects[client.id][constants.OBJECT_KEY.NAME] + " do a push a up, total " + pushUpTimePoint)
         console.log('OBJECT REVIEW :', JSON.stringify(clientObjects[client.id]))
-
         console.log("****************************************************************************************************\n")
         io.emit(constants.CLIENT_EVENT.PUSH_UP, pushUpTimePoint);
     });
